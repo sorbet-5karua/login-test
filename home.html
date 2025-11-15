@@ -20,5 +20,18 @@
 <body>
   <h1>ログイン成功</h1>
   <p>ここはログイン後のテストページです。</p>
+  
+　 <!-- ここにログアウトボタンを追加 -->
+  <button onclick="logout()">ログアウト</button>
+
+  <script>
+    function logout() {
+      // ログインの印を削除
+      localStorage.removeItem("loggedIn");
+      // ログイン画面に戻す
+      location.href = "index.html";
+    }
+  </script>
+  
 </body>
 </html>
