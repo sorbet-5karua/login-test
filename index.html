@@ -25,7 +25,8 @@
   <div class="login-box">
     <h1>ログイン</h1>
     <input id="id" placeholder="ID を入力"><br>
-    <input id="pw" type="password" placeholder="パスワードを入力"><br>
+    <input id="pw" type="password" placeholder="パスワードを入力"
+       onkeydown="if(event.key === 'Enter'){ login(); }">
     <button onclick="login()">ログイン</button>
   </div>
 </body>
