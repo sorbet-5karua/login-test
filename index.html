@@ -14,10 +14,14 @@
       const correctPw = "testpass";
 
       if (id === correctId && pw === correctPw) {
-        location.href = "home.html";
-      } else {
-        alert("IDまたはパスワードが違います");
-      }
+ 　　　 // ログインした印を保存（簡易フラグ）
+  　　　localStorage.setItem("loggedIn", "yes");
+
+　　　  // ログイン後のページへ
+ 　　　 location.href = "home.html";
+　　　} else {
+　　　  alert("IDまたはパスワードが違います");
+　　　}
     }
   </script>
 </head>
