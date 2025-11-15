@@ -3,6 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Home</title>
+
+  <!-- ここにログイン状態チェックを追加 -->
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const loggedIn = localStorage.getItem("loggedIn");
+
+      // ログインしていない場合はログインページへ戻す
+      if (loggedIn !== "yes") {
+        location.href = "index.html";
+      }
+    });
+  </script>
+
 </head>
 <body>
   <h1>ログイン成功</h1>
