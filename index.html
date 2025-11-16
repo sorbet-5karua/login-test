@@ -2,36 +2,78 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
-  <link rel="stylesheet" href="style.css">
-  <script>
-    function login() {
-      const id = document.getElementById("id").value;
-      const pw = document.getElementById("pw").value;
-
-      // テスト用の固定ID/PW
-      const correctId = "testuser";
-      const correctPw = "testpass";
-
-      if (id === correctId && pw === correctPw) {
- 　　　 // ログインした印を保存（簡易フラグ）
-  　　　localStorage.setItem("loggedIn", "yes");
-
-　　　  // ログイン後のページへ
- 　　　 location.href = "home.html";
-　　　} else {
-　　　  alert("IDまたはパスワードが違います");
-　　　}
-    }
-  </script>
+  <title>Login (Firebase)</title>
 </head>
 <body>
-  <div class="login-box">
-    <h1>ログイン</h1>
-    <input id="id" placeholder="ID を入力"><br>
-    <input id="pw" type="password" placeholder="パスワードを入力"
-       onkeydown="if(event.key === 'Enter'){ login(); }">
+  <h1>Firebase ログイン</h1>
+
+  <p>メールアドレス：</p>
+  <input id="email" type="email" placeholder="メールアドレスを入力">
+
+  <p>パスワード：</p>
+  <input id="pw" type="password" placeholder="パスワードを入力"
+         onkeydown="if (event.key === 'Enter') { login(); }">
+
+  <div style="margin-top: 12px;">
     <button onclick="login()">ログイン</button>
+    <button onclick="signup()">新規登録</button>
   </div>
+
+  <!-- Firebase を使ったログイン・新規登録処理 -->
+  <script type="module">
+    // ---------- Firebase SDK の読み込み ----------
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    // ---------- ★ここを自分の firebaseConfig に書き換える ----------
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // ---------- ログイン処理 ----------
+    async function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("pw").value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        // 成功したら home.html へ
+        location.href = "home.html";
+      } catch (error) {
+        alert("ログイン失敗: " + error.message);
+      }
+    }
+
+    // ---------- 新規ユーザー登録処理 ----------
+    async function signup() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("pw").value;
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("ユーザー登録が完了しました。続けてログインします。");
+        location.href = "home.html";
+      } catch (error) {
+        alert("ユーザー登録失敗: " + error.message);
+      }
+    }
+
+    // onclick から呼べるようにグローバルに出す
+    window.login = login;
+    window.signup = signup;
+  </script>
 </body>
 </html>
+
